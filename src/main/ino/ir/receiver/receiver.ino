@@ -14,7 +14,7 @@ void setup() {
 	pinMode(LED_PIN, OUTPUT);
 
 	Serial.begin(SPEED);
-	Serial.println("\ninitialized.");
+	Serial.println("\n[i] initialized.");
 }
 
 void loop() {
@@ -40,7 +40,7 @@ void loop() {
 
 unsigned int receive(unsigned int* data) {
 	Serial.println("[i] Start to receive.");
-	Serial.println("[i] Stop enter 's'. The other key to reset the data.");
+	Serial.println("[i] Enter 's' key to stop. The other key to reset the data.");
 	Serial.println("[i] Receiving...");
 
 	// デバイス
