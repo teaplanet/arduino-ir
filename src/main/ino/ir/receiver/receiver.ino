@@ -1,3 +1,5 @@
+#include <string.h>
+
 const long SPEED = 115200;		// 通信速度
 
 // pin
@@ -7,6 +9,8 @@ const int LED_PIN = 13;			// LED
 
 // 赤外線信号
 const int MAX_RECV_SIZE = 512;	// 送受信最大データ長
+
+unsigned int* signal;
 
 void setup() {
 	pinMode(IR_RECV_PIN, INPUT);
@@ -23,6 +27,7 @@ void loop() {
 		if (c == 'r') {
 			unsigned int data[MAX_RECV_SIZE] = {};
 			int size = receive(data);
+
 			Serial.print("[i] data size: ");
 			Serial.print(size, DEC);
 			Serial.println("");
@@ -34,8 +39,26 @@ void loop() {
 			}
 			Serial.println("");
 			Serial.println("----------------");
+
+			if (signal == NULL) {
+				free(signal);
+			}
+			signal = (unsigned int*) malloc(sizeof(unsigned int) * (size + 1));
+			memcpy(signal, data, sizeof(int)*size);
+			signal[size] = 0;
+		} else if (c == 's') {
+			send();
 		}
 	}
+}
+
+void send() {
+	unsigned int i = 0;
+	while (signal[i] != 0) {
+		Serial.print(signal[i++]);
+		Serial.print(", ");
+	}
+	Serial.println("");
 }
 
 unsigned int receive(unsigned int* data) {
